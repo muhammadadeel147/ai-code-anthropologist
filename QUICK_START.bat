@@ -61,7 +61,9 @@ if not exist ".env" (
     copy .env.example .env
     echo.
     echo [WARNING] Please edit .env and add your IBM AI API key:
-    echo    CLAUDE_API_KEY=your_ibm_api_key_here
+    echo    IBM_WATSONX_API_KEY=your_ibm_api_key_here
+    echo    IBM_WATSONX_PROJECT_ID=your_ibm_watsonx_project_id_here
+    echo    IBM_WATSONX_URL=your_ibm_watsonx_api_url_here
     echo.
     pause
 ) else (
@@ -84,6 +86,13 @@ echo.
 
 echo Starting PostgreSQL, Redis, Backend API, and Worker...
 docker-compose up -d postgres redis backend worker
+if %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo [ERROR] Failed to start backend services
+    echo Please review the Docker build output above, then run:
+    echo    docker-compose up -d postgres redis backend worker
+    exit /b 1
+)
 
 echo.
 echo Waiting for services to be ready...

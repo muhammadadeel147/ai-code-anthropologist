@@ -1,0 +1,223 @@
+{
+  "graph_metadata": {
+    "repository_url": "https://github.com/muhammadadeel147/Zarghoon",
+    "total_nodes": 8,
+    "total_edges": 12,
+    "total_risks": 3,
+    "generated_date": "2024-09-16"
+  },
+  "nodes": [
+    {
+      "id": "ADR-001",
+      "type": "decision",
+      "category": "architecture",
+      "properties": {
+        "title": "Use Express.js as the web framework",
+        "status": "accepted",
+        "complexity_score": 5,
+        "impact_score": 8
+      }
+    },
+    {
+      "id": "ADR-002",
+      "type": "decision",
+      "category": "database",
+      "properties": {
+        "title": "Use MongoDB as the database",
+        "status": "accepted",
+        "complexity_score": 3,
+        "impact_score": 6
+      }
+    },
+    {
+      "id": "FILE-lib-express-js",
+      "type": "code",
+      "category": "library",
+      "properties": {
+        "filename": "lib/express.js",
+        "language": "JavaScript"
+      }
+    },
+    {
+      "id": "FILE-auth-js",
+      "type": "code",
+      "category": "authentication",
+      "properties": {
+        "filename": "auth.js",
+        "language": "JavaScript"
+      }
+    },
+    {
+      "id": "FILE-users-js",
+      "type": "code",
+      "category": "user_management",
+      "properties": {
+        "filename": "users.js",
+        "language": "JavaScript"
+      }
+    },
+    {
+      "id": "FILE-mongo-models-js",
+      "type": "code",
+      "category": "database",
+      "properties": {
+        "filename": "mongo-models.js",
+        "language": "JavaScript"
+      }
+    },
+    {
+      "id": "FILE-express-router-js",
+      "type": "code",
+      "category": "routing",
+      "properties": {
+        "filename": "express-router.js",
+        "language": "JavaScript"
+      }
+    },
+    {
+      "id": "FILE-controllers-js",
+      "type": "code",
+      "category": "controllers",
+      "properties": {
+        "filename": "controllers.js",
+        "language": "JavaScript"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "from": "ADR-001",
+      "to": "FILE-lib-express-js",
+      "type": "implemented_in",
+      "strength": "strong"
+    },
+    {
+      "from": "ADR-002",
+      "to": "FILE-mongo-models-js",
+      "type": "implemented_in",
+      "strength": "strong"
+    },
+    {
+      "from": "FILE-lib-express-js",
+      "to": "FILE-express-router-js",
+      "type": "imports",
+      "strength": "weak"
+    },
+    {
+      "from": "FILE-express-router-js",
+      "to": "FILE-controllers-js",
+      "type": "calls",
+      "strength": "strong"
+    },
+    {
+      "from": "FILE-controllers-js",
+      "to": "FILE-users-js",
+      "type": "depends_on",
+      "strength": "weak"
+    },
+    {
+      "from": "ADR-001",
+      "to": "ADR-002",
+      "type": "superseded_by",
+      "strength": "weak"
+    },
+    {
+      "from": "FILE-auth-js",
+      "to": "FILE-users-js",
+      "type": "depends_on",
+      "strength": "weak"
+    },
+    {
+      "from": "ADR-002",
+      "to": "FILE-auth-js",
+      "type": "affects",
+      "strength": "strong"
+    },
+    {
+      "from": "FILE-mongo-models-js",
+      "to": "FILE-users-js",
+      "type": "imports",
+      "strength": "weak"
+    },
+    {
+      "from": "FILE-express-router-js",
+      "to": "FILE-auth-js",
+      "type": "calls",
+      "strength": "strong"
+    },
+    {
+      "from": "ADR-001",
+      "to": "FILE-controllers-js",
+      "type": "documented_in",
+      "strength": "weak"
+    },
+    {
+      "from": "FILE-users-js",
+      "to": "FILE-mongo-models-js",
+      "type": "depends_on",
+      "strength": "weak"
+    }
+  ],
+  "risk_alerts": [
+    {
+      "id": "RISK-001",
+      "severity": "high",
+      "type": "breaking_change",
+      "title": "Express.js version update may break existing code",
+      "description": "The latest version of Express.js may introduce breaking changes that could affect the existing codebase.",
+      "affected_items": [
+        "FILE-lib-express-js",
+        "FILE-express-router-js"
+      ],
+      "mitigation": "Review the Express.js changelog and update the code accordingly."
+    },
+    {
+      "id": "RISK-002",
+      "severity": "medium",
+      "type": "deprecated_code",
+      "title": "Unused code in users.js",
+      "description": "There is unused code in the users.js file that should be removed to avoid maintenance issues.",
+      "affected_items": [
+        "FILE-users-js"
+      ],
+      "mitigation": "Remove the unused code and refactor the file as needed."
+    },
+    {
+      "id": "RISK-003",
+      "severity": "low",
+      "type": "fragile_area",
+      "title": "Tight coupling between controllers and models",
+      "description": "The controllers and models are tightly coupled, which may make it difficult to maintain and update the codebase.",
+      "affected_items": [
+        "FILE-controllers-js",
+        "FILE-mongo-models-js"
+      ],
+      "mitigation": "Refactor the code to reduce coupling and improve modularity."
+    }
+  ],
+  "clusters": [
+    {
+      "name": "Authentication System",
+      "nodes": [
+        "ADR-001",
+        "FILE-auth-js",
+        "FILE-users-js"
+      ]
+    },
+    {
+      "name": "Database System",
+      "nodes": [
+        "ADR-002",
+        "FILE-mongo-models-js",
+        "FILE-controllers-js"
+      ]
+    },
+    {
+      "name": "Routing System",
+      "nodes": [
+        "FILE-express-router-js",
+        "FILE-controllers-js"
+      ]
+    }
+  ]
+}

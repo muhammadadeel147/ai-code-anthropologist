@@ -1,0 +1,312 @@
+{
+  "graph_metadata": {
+    "repository_url": "https://github.com/muhammadadeel147/Talentvare",
+    "total_nodes": 12,
+    "total_edges": 17,
+    "total_risks": 3,
+    "generated_date": "2024-09-16"
+  },
+  "nodes": [
+    {
+      "id": "ADR-001",
+      "type": "decision",
+      "category": "architecture",
+      "properties": {
+        "title": "Use Express.js as the web framework",
+        "status": "accepted",
+        "complexity_score": 5,
+        "impact_score": 8
+      }
+    },
+    {
+      "id": "ADR-002",
+      "type": "decision",
+      "category": "database",
+      "properties": {
+        "title": "Use MongoDB as the database",
+        "status": "proposed",
+        "complexity_score": 4,
+        "impact_score": 6
+      }
+    },
+    {
+      "id": "ADR-003",
+      "type": "decision",
+      "category": "security",
+      "properties": {
+        "title": "Implement authentication using JSON Web Tokens",
+        "status": "accepted",
+        "complexity_score": 7,
+        "impact_score": 9
+      }
+    },
+    {
+      "id": "FILE-lib-express-js",
+      "type": "code",
+      "category": "library",
+      "properties": {
+        "title": "Express.js library",
+        "status": "active",
+        "complexity_score": 3,
+        "impact_score": 5
+      }
+    },
+    {
+      "id": "FILE-auth-js",
+      "type": "code",
+      "category": "module",
+      "properties": {
+        "title": "Authentication module",
+        "status": "active",
+        "complexity_score": 6,
+        "impact_score": 8
+      }
+    },
+    {
+      "id": "FILE-db-mongo-js",
+      "type": "code",
+      "category": "module",
+      "properties": {
+        "title": "MongoDB database module",
+        "status": "active",
+        "complexity_score": 5,
+        "impact_score": 7
+      }
+    },
+    {
+      "id": "FILE-index-js",
+      "type": "code",
+      "category": "entry_point",
+      "properties": {
+        "title": "Entry point of the application",
+        "status": "active",
+        "complexity_score": 2,
+        "impact_score": 4
+      }
+    },
+    {
+      "id": "FILE-server-js",
+      "type": "code",
+      "category": "module",
+      "properties": {
+        "title": "Server module",
+        "status": "active",
+        "complexity_score": 4,
+        "impact_score": 6
+      }
+    },
+    {
+      "id": "FILE-utils-js",
+      "type": "code",
+      "category": "utility",
+      "properties": {
+        "title": "Utility functions",
+        "status": "active",
+        "complexity_score": 1,
+        "impact_score": 3
+      }
+    },
+    {
+      "id": "RISK-001",
+      "type": "risk",
+      "category": "breaking_change",
+      "properties": {
+        "title": "Deprecation of Express.js 4.x",
+        "status": "active",
+        "complexity_score": 8,
+        "impact_score": 9
+      }
+    },
+    {
+      "id": "RISK-002",
+      "type": "risk",
+      "category": "fragile_area",
+      "properties": {
+        "title": "Unstable MongoDB connection",
+        "status": "active",
+        "complexity_score": 6,
+        "impact_score": 8
+      }
+    },
+    {
+      "id": "RISK-003",
+      "type": "risk",
+      "category": "deprecated_code",
+      "properties": {
+        "title": "Use of deprecated MongoDB driver",
+        "status": "active",
+        "complexity_score": 5,
+        "impact_score": 7
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "from": "ADR-001",
+      "to": "FILE-lib-express-js",
+      "type": "implemented_in",
+      "strength": "strong"
+    },
+    {
+      "from": "ADR-002",
+      "to": "FILE-db-mongo-js",
+      "type": "implemented_in",
+      "strength": "strong"
+    },
+    {
+      "from": "ADR-003",
+      "to": "FILE-auth-js",
+      "type": "implemented_in",
+      "strength": "strong"
+    },
+    {
+      "from": "FILE-lib-express-js",
+      "to": "FILE-server-js",
+      "type": "imports",
+      "strength": "weak"
+    },
+    {
+      "from": "FILE-db-mongo-js",
+      "to": "FILE-server-js",
+      "type": "imports",
+      "strength": "weak"
+    },
+    {
+      "from": "FILE-auth-js",
+      "to": "FILE-server-js",
+      "type": "imports",
+      "strength": "weak"
+    },
+    {
+      "from": "FILE-server-js",
+      "to": "FILE-index-js",
+      "type": "calls",
+      "strength": "strong"
+    },
+    {
+      "from": "FILE-index-js",
+      "to": "FILE-utils-js",
+      "type": "imports",
+      "strength": "weak"
+    },
+    {
+      "from": "ADR-001",
+      "to": "ADR-002",
+      "type": "affects",
+      "strength": "weak"
+    },
+    {
+      "from": "ADR-002",
+      "to": "ADR-003",
+      "type": "depends_on",
+      "strength": "strong"
+    },
+    {
+      "from": "ADR-003",
+      "to": "ADR-001",
+      "type": "superseded_by",
+      "strength": "weak"
+    },
+    {
+      "from": "RISK-001",
+      "to": "ADR-001",
+      "type": "affects",
+      "strength": "strong"
+    },
+    {
+      "from": "RISK-002",
+      "to": "ADR-002",
+      "type": "affects",
+      "strength": "strong"
+    },
+    {
+      "from": "RISK-003",
+      "to": "ADR-003",
+      "type": "affects",
+      "strength": "strong"
+    },
+    {
+      "from": "RISK-001",
+      "to": "FILE-lib-express-js",
+      "type": "documented_in",
+      "strength": "weak"
+    },
+    {
+      "from": "RISK-002",
+      "to": "FILE-db-mongo-js",
+      "type": "documented_in",
+      "strength": "weak"
+    },
+    {
+      "from": "RISK-003",
+      "to": "FILE-auth-js",
+      "type": "documented_in",
+      "strength": "weak"
+    }
+  ],
+  "risk_alerts": [
+    {
+      "id": "RISK-001",
+      "severity": "high",
+      "type": "breaking_change",
+      "title": "Deprecation of Express.js 4.x",
+      "description": "The deprecation of Express.js 4.x may break the application.",
+      "affected_items": [
+        "ADR-001",
+        "FILE-lib-express-js"
+      ],
+      "mitigation": "Upgrade to Express.js 5.x"
+    },
+    {
+      "id": "RISK-002",
+      "severity": "medium",
+      "type": "fragile_area",
+      "title": "Unstable MongoDB connection",
+      "description": "The MongoDB connection is unstable and may cause data loss.",
+      "affected_items": [
+        "ADR-002",
+        "FILE-db-mongo-js"
+      ],
+      "mitigation": "Improve the MongoDB connection stability"
+    },
+    {
+      "id": "RISK-003",
+      "severity": "low",
+      "type": "deprecated_code",
+      "title": "Use of deprecated MongoDB driver",
+      "description": "The MongoDB driver is deprecated and may cause compatibility issues.",
+      "affected_items": [
+        "ADR-003",
+        "FILE-auth-js"
+      ],
+      "mitigation": "Upgrade to the latest MongoDB driver"
+    }
+  ],
+  "clusters": [
+    {
+      "name": "Authentication System",
+      "nodes": [
+        "ADR-001",
+        "ADR-003",
+        "FILE-auth-js",
+        "FILE-lib-express-js"
+      ]
+    },
+    {
+      "name": "Database System",
+      "nodes": [
+        "ADR-002",
+        "FILE-db-mongo-js",
+        "FILE-server-js"
+      ]
+    },
+    {
+      "name": "Server System",
+      "nodes": [
+        "ADR-001",
+        "FILE-server-js",
+        "FILE-index-js"
+      ]
+    }
+  ]
+}

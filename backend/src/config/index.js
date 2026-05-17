@@ -21,7 +21,12 @@ const config = {
   },
 
   // API Keys
-  claudeApiKey: process.env.CLAUDE_API_KEY,
+  ibm: {
+    apiKey: process.env.IBM_WATSONX_API_KEY,
+    apiUrl: process.env.IBM_WATSONX_URL || 'https://eu-de.ml.cloud.ibm.com',
+    projectId: process.env.IBM_WATSONX_PROJECT_ID,
+    modelId: process.env.IBM_WATSONX_MODEL_ID || 'meta-llama/llama-3-3-70b-instruct',
+  },
   githubToken: process.env.GITHUB_TOKEN,
 
   // Worker configuration
@@ -58,9 +63,8 @@ const config = {
     level: process.env.LOG_LEVEL || 'info',
   },
 
-  // Claude API configuration
-  claude: {
-    model: 'claude-3-5-sonnet-20241022',
+  // IBM AI configuration
+  ai: {
     maxTokens: 8000,
     temperature: 0.7,
   },
@@ -74,7 +78,7 @@ const config = {
 };
 
 // Validate required configuration
-const requiredEnvVars = ['CLAUDE_API_KEY'];
+const requiredEnvVars = ['IBM_WATSONX_API_KEY', 'IBM_WATSONX_PROJECT_ID'];
 
 if (config.nodeEnv === 'production') {
   requiredEnvVars.push('DATABASE_URL', 'REDIS_URL', 'JWT_SECRET');

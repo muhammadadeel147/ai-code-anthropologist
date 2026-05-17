@@ -17,6 +17,7 @@ import {
   ArrowPathIcon,
   LinkIcon,
 } from '@heroicons/react/24/outline';
+import { apiUrl } from '@/lib/api';
 
 interface ADRDetail {
   id: string;
@@ -60,7 +61,7 @@ export default function ADRDetailPage() {
     queryKey: ['adr', repoId, adrId],
     queryFn: async () => {
       const response = await fetch(
-        `http://localhost:3001/api/repositories/${repoId}/adrs/${adrId}`
+        apiUrl(`/api/repositories/${repoId}/adrs/${adrId}`)
       );
       if (!response.ok) throw new Error('Failed to fetch ADR');
       return response.json();
@@ -356,7 +357,7 @@ export default function ADRDetailPage() {
             <div className="prose prose-invert prose-purple max-w-none">
               <ReactMarkdown
                 components={{
-                  code({ node, inline, className, children, ...props }) {
+                  code({ node, inline, className, children, ...props }: any) {
                     const match = /language-(\w+)/.exec(className || '');
                     return !inline && match ? (
                       <SyntaxHighlighter

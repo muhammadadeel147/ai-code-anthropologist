@@ -34,7 +34,7 @@ ai-code-anthropologist/
 
 - Node.js 20+
 - Docker & Docker Compose
-- Claude API key (from Anthropic)
+- IBM Watsonx API key
 - GitHub Personal Access Token (optional, for private repos)
 
 ### Installation
@@ -118,7 +118,7 @@ backend/
 │   │   └── middleware/      # Express middleware
 │   ├── services/
 │   │   ├── repository/      # Repository cloning & analysis
-│   │   ├── ai/              # Claude API integration
+│   │   ├── ai/              # IBM AI integration
 │   │   ├── adr/             # ADR generation
 │   │   ├── graph/           # Knowledge graph generation
 │   │   └── qa/              # Q&A system
@@ -189,7 +189,9 @@ npm run type-check
 See `.env.example` for all available configuration options.
 
 Key variables:
-- `CLAUDE_API_KEY`: Your Anthropic Claude API key
+- `IBM_WATSONX_API_KEY`: Your IBM Watsonx API key
+- `IBM_WATSONX_PROJECT_ID`: Your IBM Watsonx project ID
+- `IBM_WATSONX_URL`: Your IBM Watsonx API URL
 - `GITHUB_TOKEN`: GitHub personal access token (for private repos)
 - `DATABASE_URL`: PostgreSQL connection string
 - `REDIS_URL`: Redis connection string

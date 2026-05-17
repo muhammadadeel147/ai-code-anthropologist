@@ -1,0 +1,247 @@
+{
+  "graph_metadata": {
+    "repository_url": "https://github.com/muhammadadeel147/Tailwind-Dashboard-UI",
+    "total_nodes": 10,
+    "total_edges": 15,
+    "total_risks": 2,
+    "generated_date": "2024-09-16"
+  },
+  "nodes": [
+    {
+      "id": "ADR-001",
+      "type": "decision",
+      "category": "architecture",
+      "properties": {
+        "title": "Use Tailwind CSS for styling",
+        "status": "accepted",
+        "complexity_score": 3,
+        "impact_score": 6
+      }
+    },
+    {
+      "id": "FILE-index.html",
+      "type": "code",
+      "category": "frontend",
+      "properties": {
+        "filename": "index.html",
+        "language": "HTML"
+      }
+    },
+    {
+      "id": "FILE-tailwind.config.js",
+      "type": "code",
+      "category": "configuration",
+      "properties": {
+        "filename": "tailwind.config.js",
+        "language": "JavaScript"
+      }
+    },
+    {
+      "id": "FILE-dashboard.js",
+      "type": "code",
+      "category": "frontend",
+      "properties": {
+        "filename": "dashboard.js",
+        "language": "JavaScript"
+      }
+    },
+    {
+      "id": "DEPENDENCY-Tailwind CSS",
+      "type": "dependency",
+      "category": "library",
+      "properties": {
+        "name": "Tailwind CSS",
+        "version": "3.2.4"
+      }
+    },
+    {
+      "id": "DEPENDENCY-React",
+      "type": "dependency",
+      "category": "library",
+      "properties": {
+        "name": "React",
+        "version": "18.2.0"
+      }
+    },
+    {
+      "id": "FILE-auth.js",
+      "type": "code",
+      "category": "frontend",
+      "properties": {
+        "filename": "auth.js",
+        "language": "JavaScript"
+      }
+    },
+    {
+      "id": "FILE-utils.js",
+      "type": "code",
+      "category": "frontend",
+      "properties": {
+        "filename": "utils.js",
+        "language": "JavaScript"
+      }
+    },
+    {
+      "id": "ADR-002",
+      "type": "decision",
+      "category": "architecture",
+      "properties": {
+        "title": "Use React for building UI components",
+        "status": "accepted",
+        "complexity_score": 4,
+        "impact_score": 7
+      }
+    },
+    {
+      "id": "DEPENDENCY-Express.js",
+      "type": "dependency",
+      "category": "library",
+      "properties": {
+        "name": "Express.js",
+        "version": "4.17.1"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "from": "ADR-001",
+      "to": "FILE-tailwind.config.js",
+      "type": "implemented_in",
+      "strength": "strong"
+    },
+    {
+      "from": "ADR-001",
+      "to": "FILE-index.html",
+      "type": "affects",
+      "strength": "weak"
+    },
+    {
+      "from": "FILE-index.html",
+      "to": "FILE-dashboard.js",
+      "type": "imports",
+      "strength": "strong"
+    },
+    {
+      "from": "FILE-dashboard.js",
+      "to": "DEPENDENCY-Tailwind CSS",
+      "type": "depends_on",
+      "strength": "strong"
+    },
+    {
+      "from": "FILE-dashboard.js",
+      "to": "DEPENDENCY-React",
+      "type": "depends_on",
+      "strength": "strong"
+    },
+    {
+      "from": "ADR-002",
+      "to": "FILE-auth.js",
+      "type": "implemented_in",
+      "strength": "strong"
+    },
+    {
+      "from": "ADR-002",
+      "to": "FILE-utils.js",
+      "type": "affects",
+      "strength": "weak"
+    },
+    {
+      "from": "FILE-auth.js",
+      "to": "DEPENDENCY-Express.js",
+      "type": "depends_on",
+      "strength": "strong"
+    },
+    {
+      "from": "FILE-utils.js",
+      "to": "DEPENDENCY-Tailwind CSS",
+      "type": "depends_on",
+      "strength": "weak"
+    },
+    {
+      "from": "DEPENDENCY-Tailwind CSS",
+      "to": "DEPENDENCY-React",
+      "type": "imports",
+      "strength": "strong"
+    },
+    {
+      "from": "DEPENDENCY-React",
+      "to": "DEPENDENCY-Express.js",
+      "type": "depends_on",
+      "strength": "weak"
+    },
+    {
+      "from": "ADR-001",
+      "to": "ADR-002",
+      "type": "superseded_by",
+      "strength": "weak"
+    },
+    {
+      "from": "ADR-002",
+      "to": "ADR-001",
+      "type": "affects",
+      "strength": "weak"
+    },
+    {
+      "from": "ADR-001",
+      "to": "DEPENDENCY-Tailwind CSS",
+      "type": "depends_on",
+      "strength": "strong"
+    },
+    {
+      "from": "ADR-002",
+      "to": "DEPENDENCY-React",
+      "type": "depends_on",
+      "strength": "strong"
+    }
+  ],
+  "risk_alerts": [
+    {
+      "id": "RISK-001",
+      "severity": "high",
+      "type": "breaking_change",
+      "title": "Tailwind CSS version upgrade",
+      "description": "Upgrading Tailwind CSS to version 3.2.4 may break existing styling",
+      "affected_items": [
+        "FILE-index.html",
+        "FILE-dashboard.js"
+      ],
+      "mitigation": "Test thoroughly after upgrade"
+    },
+    {
+      "id": "RISK-002",
+      "severity": "medium",
+      "type": "deprecated_code",
+      "title": "React version upgrade",
+      "description": "Using React version 18.2.0 may lead to deprecated code",
+      "affected_items": [
+        "FILE-auth.js",
+        "FILE-utils.js"
+      ],
+      "mitigation": "Update React version to latest"
+    }
+  ],
+  "clusters": [
+    {
+      "name": "Frontend",
+      "nodes": [
+        "FILE-index.html",
+        "FILE-dashboard.js",
+        "FILE-auth.js",
+        "FILE-utils.js"
+      ]
+    },
+    {
+      "name": "Backend",
+      "nodes": [
+        "DEPENDENCY-Express.js"
+      ]
+    },
+    {
+      "name": "Styling",
+      "nodes": [
+        "FILE-tailwind.config.js",
+        "DEPENDENCY-Tailwind CSS"
+      ]
+    }
+  ]
+}

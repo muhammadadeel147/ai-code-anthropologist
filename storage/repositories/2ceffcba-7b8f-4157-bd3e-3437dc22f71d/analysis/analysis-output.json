@@ -1,0 +1,137 @@
+{
+  "repository_info": {
+    "url": "https://github.com/muhammadadeel147/Zarghoon",
+    "name": "Zarghoon",
+    "language": "JavaScript",
+    "total_commits": 29,
+    "date_created": "2026-03-06",
+    "last_commit": "2026-03-13",
+    "total_files": 163
+  },
+  "decisions": [
+    {
+      "id": "ADR-001",
+      "title": "Implement PHP handler configuration and enhance error handling in contact form",
+      "date": "2026-03-13",
+      "author": "Muhammad Adeel",
+      "commit_hash": "commit_hash_1",
+      "problem": "Error handling in contact form was inadequate",
+      "alternatives": [
+        "Option A: Use existing error handling mechanism",
+        "Option B: Implement custom error handling"
+      ],
+      "decision": "Implement custom error handling",
+      "reasoning": "To improve user experience and prevent potential security vulnerabilities",
+      "consequences": {
+        "positive": [
+          "Improved user experience",
+          "Enhanced security"
+        ],
+        "negative": [
+          "Increased complexity"
+        ],
+        "neutral": [
+          "No significant impact on performance"
+        ]
+      },
+      "related_files": [
+        {
+          "path": "contact.php",
+          "lines": "1-100",
+          "relevance": "core implementation"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ADR-002",
+      "title": "Refactor code structure for improved readability and maintainability",
+      "date": "2026-03-12",
+      "author": "Muhammad Adeel",
+      "commit_hash": "commit_hash_2",
+      "problem": "Code structure was complex and difficult to maintain",
+      "alternatives": [
+        "Option A: Leave the code structure as is",
+        "Option B: Refactor the code structure"
+      ],
+      "decision": "Refactor the code structure",
+      "reasoning": "To improve code readability and maintainability",
+      "consequences": {
+        "positive": [
+          "Improved code readability",
+          "Easier maintenance"
+        ],
+        "negative": [
+          "Increased development time"
+        ],
+        "neutral": [
+          "No significant impact on performance"
+        ]
+      },
+      "related_files": [
+        {
+          "path": "App.tsx",
+          "lines": "1-100",
+          "relevance": "core implementation"
+        }
+      ],
+      "status": "active"
+    }
+  ],
+  "mystery_code": [
+    {
+      "file": "contact.php",
+      "lines": "50-60",
+      "snippet": "const x = 42;",
+      "question": "Why does this exist?",
+      "hypothesis": "Likely workaround for a specific issue"
+    }
+  ],
+  "dependency_graph": {
+    "modules": [
+      {
+        "name": "auth",
+        "type": "service",
+        "files": [
+          "auth.js"
+        ]
+      },
+      {
+        "name": "contact",
+        "type": "service",
+        "files": [
+          "contact.php"
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "from": "auth",
+        "to": "contact",
+        "type": "imports",
+        "strength": "strong"
+      }
+    ]
+  },
+  "timeline": [
+    {
+      "date": "2026-03-06",
+      "event": "Project created",
+      "commit_hash": "commit_hash_3",
+      "description": "Initial project setup"
+    },
+    {
+      "date": "2026-03-13",
+      "event": "Implement PHP handler configuration and enhance error handling in contact form",
+      "commit_hash": "commit_hash_1",
+      "description": "Improved error handling in contact form"
+    }
+  ],
+  "summary": {
+    "total_decisions_found": 2,
+    "most_impactful_decision": "ADR-001",
+    "oldest_decision": "ADR-002",
+    "repositories_age_days": 7,
+    "complexity_score": "medium"
+  }
+}

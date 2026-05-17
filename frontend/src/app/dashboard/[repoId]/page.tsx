@@ -15,6 +15,7 @@ import {
   CheckCircleIcon,
   ArrowPathIcon,
 } from '@heroicons/react/24/outline';
+import { apiUrl } from '@/lib/api';
 
 interface RepositoryData {
   id: string;
@@ -68,16 +69,17 @@ export default function DashboardPage() {
   const { data, isLoading, error } = useQuery<DashboardStats>({
     queryKey: ['dashboard', repoId],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:3001/api/repositories/${repoId}/dashboard`);
+      const response = await fetch(apiUrl(`/api/repositories/${repoId}/dashboard`));
       if (!response.ok) throw new Error('Failed to fetch dashboard data');
-      return response.json();
+      const result = await response.json();
+      return result.data; // Extract data from the API response wrapper
     },
   });
 
   const handleExport = async (format: 'json' | 'pdf' | 'markdown') => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/repositories/${repoId}/export?format=${format}`
+        apiUrl(`/api/repositories/${repoId}/export?format=${format}`)
       );
       if (!response.ok) throw new Error('Export failed');
       

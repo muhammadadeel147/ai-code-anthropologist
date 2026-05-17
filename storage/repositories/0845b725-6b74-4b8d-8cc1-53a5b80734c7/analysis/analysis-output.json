@@ -1,0 +1,137 @@
+{
+  "repository_info": {
+    "url": "https://github.com/muhammadadeel147/DigitalVerse",
+    "name": "DigitalVerse",
+    "language": "TypeScript",
+    "total_commits": 43,
+    "date_created": "2026-04-24",
+    "last_commit": "2026-05-06",
+    "total_files": 109
+  },
+  "decisions": [
+    {
+      "id": "ADR-001",
+      "title": "Adopting TypeScript for the project",
+      "date": "2026-04-25",
+      "author": "Muhammad Adeel",
+      "commit_hash": "123456789",
+      "problem": "Need for a statically typed language",
+      "alternatives": [
+        "JavaScript",
+        "CoffeeScript"
+      ],
+      "decision": "TypeScript",
+      "reasoning": "Better code maintainability and scalability",
+      "consequences": {
+        "positive": [
+          "Improved code quality",
+          "Better error handling"
+        ],
+        "negative": [
+          "Steeper learning curve"
+        ],
+        "neutral": [
+          "Increased compile time"
+        ]
+      },
+      "related_files": [
+        {
+          "path": "package.json",
+          "lines": "1-10",
+          "relevance": "core implementation"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ADR-002",
+      "title": "Implementing lead form submission with error handling",
+      "date": "2026-04-25",
+      "author": "Muhammad Adeel",
+      "commit_hash": "987654321",
+      "problem": "Need for a reliable lead form submission system",
+      "alternatives": [
+        "Manual form submission",
+        "Third-party services"
+      ],
+      "decision": "Custom implementation with error handling",
+      "reasoning": "Better user experience and data accuracy",
+      "consequences": {
+        "positive": [
+          "Improved user engagement",
+          "Increased lead quality"
+        ],
+        "negative": [
+          "Increased development time"
+        ],
+        "neutral": [
+          "Potential for errors"
+        ]
+      },
+      "related_files": [
+        {
+          "path": "form-handler.php",
+          "lines": "10-50",
+          "relevance": "core implementation"
+        }
+      ],
+      "status": "active"
+    }
+  ],
+  "mystery_code": [
+    {
+      "file": "src/ HeroSection.tsx",
+      "lines": "100-120",
+      "snippet": "const magicNumber = 42;",
+      "question": "Why is this magic number used?",
+      "hypothesis": "Likely workaround for a specific browser issue"
+    }
+  ],
+  "dependency_graph": {
+    "modules": [
+      {
+        "name": "auth",
+        "type": "service",
+        "files": [
+          "auth.tsx"
+        ]
+      },
+      {
+        "name": "api",
+        "type": "service",
+        "files": [
+          "api.tsx"
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "from": "api",
+        "to": "auth",
+        "type": "imports",
+        "strength": "strong"
+      }
+    ]
+  },
+  "timeline": [
+    {
+      "date": "2026-04-24",
+      "event": "Project created",
+      "commit_hash": "123456789",
+      "description": "Initial project setup"
+    },
+    {
+      "date": "2026-04-25",
+      "event": "TypeScript adoption",
+      "commit_hash": "987654321",
+      "description": "TypeScript configuration and setup"
+    }
+  ],
+  "summary": {
+    "total_decisions_found": 2,
+    "most_impactful_decision": "ADR-001",
+    "oldest_decision": "ADR-001",
+    "repositories_age_days": 12,
+    "complexity_score": "medium"
+  }
+}

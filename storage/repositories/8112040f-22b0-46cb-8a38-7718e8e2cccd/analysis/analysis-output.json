@@ -1,0 +1,191 @@
+{
+  "repository_info": {
+    "url": "https://github.com/muhammadadeel147/Electric-Shop-Server",
+    "name": "Electric-Shop-Server",
+    "language": "JavaScript",
+    "total_commits": 5,
+    "date_created": "2025-04-20",
+    "last_commit": "2025-07-05",
+    "total_files": 20
+  },
+  "decisions": [
+    {
+      "id": "ADR-001",
+      "title": "Error Handler Middleware",
+      "date": "2025-04-22",
+      "author": "Muhammad Adeel",
+      "commit_hash": null,
+      "problem": "Error handling was not implemented",
+      "alternatives": [],
+      "decision": "Implement error handler middleware",
+      "reasoning": "To handle errors in a centralized way",
+      "consequences": {
+        "positive": [
+          "Improved error handling"
+        ],
+        "negative": [],
+        "neutral": []
+      },
+      "related_files": [
+        {
+          "path": "errorHandler.js",
+          "lines": "1-679",
+          "relevance": "core implementation"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ADR-002",
+      "title": "Category Product Transaction",
+      "date": "2025-04-21",
+      "author": "Muhammad Adeel",
+      "commit_hash": null,
+      "problem": "Category product transactions were not implemented",
+      "alternatives": [],
+      "decision": "Implement category product transactions",
+      "reasoning": "To support business requirements",
+      "consequences": {
+        "positive": [
+          "Improved functionality"
+        ],
+        "negative": [],
+        "neutral": []
+      },
+      "related_files": [
+        {
+          "path": "categoryController.js",
+          "lines": "1-6868",
+          "relevance": "core implementation"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ADR-003",
+      "title": "Inventory Module Separation",
+      "date": "2025-07-05",
+      "author": "Muhammad Adeel",
+      "commit_hash": null,
+      "problem": "Inventory module was not separated",
+      "alternatives": [],
+      "decision": "Separate inventory module",
+      "reasoning": "To improve maintainability and scalability",
+      "consequences": {
+        "positive": [
+          "Improved maintainability"
+        ],
+        "negative": [],
+        "neutral": []
+      },
+      "related_files": [
+        {
+          "path": "inventoryController.js",
+          "lines": "1-19585",
+          "relevance": "core implementation"
+        }
+      ],
+      "status": "active"
+    }
+  ],
+  "mystery_code": [
+    {
+      "file": "auth.js",
+      "lines": "1-816",
+      "snippet": "const auth = require('./auth');",
+      "question": "Why is auth.js requiring itself?",
+      "hypothesis": "Likely a mistake or redundant code"
+    }
+  ],
+  "dependency_graph": {
+    "modules": [
+      {
+        "name": "auth",
+        "type": "service",
+        "files": [
+          "auth.js"
+        ]
+      },
+      {
+        "name": "category",
+        "type": "service",
+        "files": [
+          "categoryController.js"
+        ]
+      },
+      {
+        "name": "inventory",
+        "type": "service",
+        "files": [
+          "inventoryController.js"
+        ]
+      },
+      {
+        "name": "product",
+        "type": "service",
+        "files": [
+          "productController.js"
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "from": "api",
+        "to": "auth",
+        "type": "imports",
+        "strength": "strong"
+      },
+      {
+        "from": "auth",
+        "to": "category",
+        "type": "uses",
+        "strength": "weak"
+      },
+      {
+        "from": "category",
+        "to": "inventory",
+        "type": "uses",
+        "strength": "weak"
+      },
+      {
+        "from": "inventory",
+        "to": "product",
+        "type": "uses",
+        "strength": "weak"
+      }
+    ]
+  },
+  "timeline": [
+    {
+      "date": "2025-04-20",
+      "event": "Project created",
+      "commit_hash": null,
+      "description": "Initial project creation"
+    },
+    {
+      "date": "2025-04-21",
+      "event": "Category product transaction added",
+      "commit_hash": null,
+      "description": "Implemented category product transactions"
+    },
+    {
+      "date": "2025-04-22",
+      "event": "Error handler middleware set",
+      "commit_hash": null,
+      "description": "Implemented error handler middleware"
+    },
+    {
+      "date": "2025-07-05",
+      "event": "Inventory module separated",
+      "commit_hash": null,
+      "description": "Separated inventory module"
+    }
+  ],
+  "summary": {
+    "total_decisions_found": 3,
+    "most_impactful_decision": "ADR-001",
+    "oldest_decision": "ADR-001",
+    "repositories_age_days": 77,
+    "complexity_score": "low"
+  }
+}

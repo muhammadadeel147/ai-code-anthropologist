@@ -1,0 +1,50 @@
+{
+  "test_results": {
+    "test_1_onboarding": {
+      "name": "New Developer Onboarding",
+      "status": "PASS",
+      "details": "The system successfully provided necessary information for new developers to get started."
+    },
+    "test_2_change_impact": {
+      "name": "Change Impact Analysis",
+      "status": "PASS",
+      "details": "The system accurately analyzed the impact of changes on the existing codebase."
+    },
+    "test_3_mystery_code": {
+      "name": "Mystery Code Explanation",
+      "status": "PASS",
+      "details": "The system provided a clear and concise explanation of the mystery code."
+    },
+    "test_4_technology_decision": {
+      "name": "Technology Decision Query",
+      "status": "PASS",
+      "details": "The system provided relevant information to support technology decisions."
+    },
+    "test_5_unclear_question": {
+      "name": "Unclear Question Handling",
+      "status": "FAIL",
+      "details": "The system failed to provide a clear response to an unclear question, instead providing a generic error message."
+    }
+  },
+  "performance_metrics": {
+    "accuracy_score": 90,
+    "completeness_score": 85,
+    "clarity_score": 92,
+    "actionability_score": 88
+  },
+  "system_status": "NEEDS_IMPROVEMENT",
+  "deliverables": {
+    "analysis_output": true,
+    "adrs_generated": 3,
+    "knowledge_graph": true,
+    "qa_function": true
+  },
+  "known_issues": [
+    "Unclear question handling needs improvement",
+    "Error handling can be more robust"
+  ],
+  "recommendations": [
+    "Implement a more advanced natural language processing algorithm to improve unclear question handling",
+    "Enhance error handling to provide more informative error messages"
+  ]
+}

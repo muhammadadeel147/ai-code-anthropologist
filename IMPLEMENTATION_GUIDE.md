@@ -70,7 +70,7 @@ cd "e:/IBM Project"
 cp .env.example .env
 
 # Edit .env and add your IBM AI API key
-# CLAUDE_API_KEY=your_ibm_api_key_here
+# IBM_WATSONX_API_KEY=your_ibm_watsonx_api_key_here
 ```
 
 2. **Start with Docker (Recommended)**
@@ -206,8 +206,10 @@ DATABASE_URL=postgresql://anthropologist:dev_password@localhost:5432/ai_anthropo
 # Redis
 REDIS_URL=redis://localhost:6379
 
-# IBM AI (or Claude API)
-CLAUDE_API_KEY=your_ibm_api_key_here
+# IBM Watsonx AI
+IBM_WATSONX_API_KEY=your_ibm_watsonx_api_key_here
+IBM_WATSONX_PROJECT_ID=your_ibm_watsonx_project_id_here
+IBM_WATSONX_URL=your_ibm_watsonx_api_url_here
 
 # GitHub (optional, for private repos)
 GITHUB_TOKEN=your_github_token_here
@@ -232,10 +234,10 @@ The system is configured to use IBM's AI services (IBM Bob / watsonx.ai). The in
 
 **To use IBM watsonx.ai:**
 1. Get your IBM Cloud API key
-2. Update `CLAUDE_API_KEY` in `.env` with your IBM key
+2. Update `IBM_WATSONX_API_KEY` in `.env` with your IBM key
 3. Update `baseUrl` in `ibmAIService.js` to IBM's endpoint
 
-**Current setup uses Claude API format** - modify as needed for IBM's specific API.
+**Current setup uses an OpenAI/Anthropic-compatible request format** - modify as needed for IBM's specific API.
 
 ---
 
@@ -343,7 +345,7 @@ docker-compose restart worker
 **4. IBM AI API errors**
 ```bash
 # Check API key is set
-echo $CLAUDE_API_KEY
+echo $IBM_WATSONX_API_KEY
 
 # Check API endpoint is correct
 # Edit backend/src/services/ai/ibmAIService.js

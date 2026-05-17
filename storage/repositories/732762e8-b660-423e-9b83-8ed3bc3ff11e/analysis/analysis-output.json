@@ -1,0 +1,153 @@
+{
+  "repository_info": {
+    "url": "https://github.com/muhammadadeel147/Talentvare",
+    "name": "Talentvare",
+    "language": "JavaScript",
+    "total_commits": 6,
+    "date_created": "2025-04-03",
+    "last_commit": "2025-04-04",
+    "total_files": 42
+  },
+  "decisions": [
+    {
+      "id": "ADR-001",
+      "title": "Initial setup of the repository",
+      "date": "2025-04-03",
+      "author": "Muhammad Adeel",
+      "commit_hash": "Not available",
+      "problem": "Setting up the project",
+      "alternatives": [],
+      "decision": "Using Vite as the build tool",
+      "reasoning": "No reasoning given",
+      "consequences": {
+        "positive": [
+          "Faster development speed"
+        ],
+        "negative": [],
+        "neutral": []
+      },
+      "related_files": [
+        {
+          "path": "vite.config.js",
+          "lines": "1-10",
+          "relevance": "core configuration"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ADR-002",
+      "title": "Readme set",
+      "date": "2025-04-04",
+      "author": "Muhammad Adeel",
+      "commit_hash": "Not available",
+      "problem": "No README file",
+      "alternatives": [],
+      "decision": "Create a README file",
+      "reasoning": "No reasoning given",
+      "consequences": {
+        "positive": [
+          "Better documentation"
+        ],
+        "negative": [],
+        "neutral": []
+      },
+      "related_files": [
+        {
+          "path": "README.md",
+          "lines": "1-10",
+          "relevance": "core documentation"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ADR-003",
+      "title": "Lazy loading set",
+      "date": "2025-04-04",
+      "author": "Muhammad Adeel",
+      "commit_hash": "Not available",
+      "problem": "No lazy loading",
+      "alternatives": [],
+      "decision": "Implement lazy loading",
+      "reasoning": "No reasoning given",
+      "consequences": {
+        "positive": [
+          "Faster page loads"
+        ],
+        "negative": [],
+        "neutral": []
+      },
+      "related_files": [
+        {
+          "path": "main.jsx",
+          "lines": "1-10",
+          "relevance": "core implementation"
+        }
+      ],
+      "status": "active"
+    }
+  ],
+  "mystery_code": [
+    {
+      "file": "App.jsx",
+      "lines": "1-10",
+      "snippet": "No suspicious code found",
+      "question": "No mystery code found",
+      "hypothesis": "No hypothesis available"
+    }
+  ],
+  "dependency_graph": {
+    "modules": [
+      {
+        "name": "main",
+        "type": "service",
+        "files": [
+          "main.jsx"
+        ]
+      },
+      {
+        "name": "app",
+        "type": "service",
+        "files": [
+          "App.jsx"
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "from": "main",
+        "to": "app",
+        "type": "imports",
+        "strength": "strong"
+      }
+    ]
+  },
+  "timeline": [
+    {
+      "date": "2025-04-03",
+      "event": "Project created",
+      "commit_hash": "Not available",
+      "description": "Initial setup of the project"
+    },
+    {
+      "date": "2025-04-04",
+      "event": "Readme set",
+      "commit_hash": "Not available",
+      "description": "Create a README file"
+    },
+    {
+      "date": "2025-04-04",
+      "event": "Lazy loading set",
+      "commit_hash": "Not available",
+      "description": "Implement lazy loading"
+    }
+  ],
+  "summary": {
+    "total_decisions_found": 3,
+    "most_impactful_decision": "ADR-001",
+    "oldest_decision": "ADR-001",
+    "repositories_age_days": 1,
+    "complexity_score": "low"
+  }
+}

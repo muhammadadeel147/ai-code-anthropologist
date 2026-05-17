@@ -175,7 +175,7 @@ cd "e:/IBM Project"
 cp .env.example .env
 
 # Edit .env and add your IBM AI API key
-# CLAUDE_API_KEY=your_ibm_api_key_here
+# IBM_WATSONX_API_KEY=your_ibm_watsonx_api_key_here
 ```
 
 2. **Start Backend with Docker**
@@ -396,7 +396,9 @@ DATABASE_URL=postgresql://anthropologist:dev_password@localhost:5432/ai_anthropo
 REDIS_URL=redis://localhost:6379
 
 # IBM AI
-CLAUDE_API_KEY=your_ibm_api_key_here
+IBM_WATSONX_API_KEY=your_ibm_watsonx_api_key_here
+IBM_WATSONX_PROJECT_ID=your_ibm_watsonx_project_id_here
+IBM_WATSONX_URL=your_ibm_watsonx_api_url_here
 
 # GitHub (optional, for private repos)
 GITHUB_TOKEN=your_github_token_here
@@ -423,7 +425,7 @@ The system uses IBM's AI services (IBM Bob / watsonx.ai). Configuration is in:
 
 **To use IBM watsonx.ai:**
 1. Get IBM Cloud API key
-2. Update `CLAUDE_API_KEY` in `.env`
+2. Update `IBM_WATSONX_API_KEY` in `.env`
 3. Update `baseUrl` in `ibmAIService.js` to IBM's endpoint
 4. Adjust request format if needed
 

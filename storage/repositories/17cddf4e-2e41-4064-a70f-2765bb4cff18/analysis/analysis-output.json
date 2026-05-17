@@ -1,0 +1,32 @@
+{
+  "repository_info": {
+    "url": "https://github.com/muhammadadeel147/Tailwind-Dashboard-UI",
+    "name": "Tailwind-Dashboard-UI",
+    "language": "HTML",
+    "total_commits": 1,
+    "date_created": "2024-08-07",
+    "last_commit": "2024-08-07",
+    "total_files": 11
+  },
+  "decisions": [],
+  "mystery_code": [],
+  "dependency_graph": {
+    "modules": [],
+    "connections": []
+  },
+  "timeline": [
+    {
+      "date": "2024-08-07",
+      "event": "Project created",
+      "commit_hash": "",
+      "description": "Initial commit with Tailwind Dashboard UI"
+    }
+  ],
+  "summary": {
+    "total_decisions_found": 0,
+    "most_impactful_decision": "",
+    "oldest_decision": "",
+    "repositories_age_days": 0,
+    "complexity_score": "low"
+  }
+}

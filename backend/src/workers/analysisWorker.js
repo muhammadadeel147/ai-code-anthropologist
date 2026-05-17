@@ -114,7 +114,8 @@ analysisQueue.process(config.worker.maxConcurrentJobs, async (job) => {
       JSON.stringify(knowledgeGraph, null, 2)
     );
 
-    await updateProgress(jobId, 4, 80, `Knowledge graph created with ${knowledgeGraph.graph_metadata?.total_nodes || 0} nodes`, io);
+    const totalNodes = knowledgeGraph?.graph_metadata?.total_nodes || knowledgeGraph?.nodes?.length || 0;
+    await updateProgress(jobId, 4, 80, `Knowledge graph created with ${totalNodes} nodes`, io);
 
     // STEP 5: Execute Prompt 4 - Q&A Function
     logger.info(`Step 5: Executing Prompt 4 - Q&A Function Generation`);
@@ -171,8 +172,8 @@ analysisQueue.process(config.worker.maxConcurrentJobs, async (job) => {
         results: {
           decisions: analysisOutput.decisions?.length || 0,
           adrs: adrOutput.adrs?.length || 0,
-          nodes: knowledgeGraph.graph_metadata?.total_nodes || 0,
-          risks: knowledgeGraph.risk_alerts?.length || 0,
+          nodes: knowledgeGraph?.graph_metadata?.total_nodes || knowledgeGraph?.nodes?.length || 0,
+          risks: knowledgeGraph?.risk_alerts?.length || knowledgeGraph?.risks?.length || 0,
         },
       });
     }
@@ -184,7 +185,7 @@ analysisQueue.process(config.worker.maxConcurrentJobs, async (job) => {
       results: {
         decisions: analysisOutput.decisions?.length || 0,
         adrs: adrOutput.adrs?.length || 0,
-        nodes: knowledgeGraph.graph_metadata?.total_nodes || 0,
+        nodes: knowledgeGraph?.graph_metadata?.total_nodes || knowledgeGraph?.nodes?.length || 0,
       },
     };
   } catch (error) {
@@ -252,23 +253,41 @@ process.on('SIGINT', async () => {
 logger.info('Analysis worker started and ready to process jobs');
 
 // Make io accessible globally for worker
-const { Server } = require('socket.io');
-const { createServer } = require('http');
 
-// Create a simple HTTP server for Socket.IO in worker
-const server = createServer();
-const io = new Server(server, {
-  cors: {
-    origin: config.cors.origin,
-    credentials: true,
-  },
+// Connect worker to backend Socket.IO server as a client and forward emits
+const { io: ioClient } = require('socket.io-client');
+const wsUrl = process.env.WS_URL || `http://localhost:${config.port}`;
+const backendSocket = ioClient(wsUrl, { reconnection: true });
+
+backendSocket.on('connect', () => {
+  logger.info(`Worker connected to backend Socket.IO at ${wsUrl} (id: ${backendSocket.id})`);
 });
 
-global.io = io;
-
-server.listen(4001, () => {
-  logger.info('Worker Socket.IO server listening on port 4001');
+backendSocket.on('connect_error', (err) => {
+  logger.error('Worker Socket.IO connection error:', err && err.message);
 });
+
+// Provide a minimal global.io compatible API used by the worker
+global.io = {
+  to: (room) => ({
+    emit: (event, payload) => {
+      // Forward standard events to backend with jobId extracted from room
+      const jobId = typeof room === 'string' ? room.replace(/^job:/, '') : undefined;
+      if (!jobId) return;
+
+      if (event === 'progress') {
+        backendSocket.emit('worker:progress', { jobId, ...payload });
+      } else if (event === 'complete') {
+        backendSocket.emit('worker:complete', { jobId, ...payload });
+      } else if (event === 'error') {
+        backendSocket.emit('worker:error', { jobId, ...payload });
+      } else {
+        // Generic forward
+        backendSocket.emit('worker:event', { jobId, event, payload });
+      }
+    },
+  }),
+};
 
 module.exports = analysisQueue;
 

@@ -1,0 +1,44 @@
+{
+  "repository_info": {
+    "url": "https://github.com/octocat/Hello-World",
+    "name": "Hello-World",
+    "language": "Markdown",
+    "total_commits": 3,
+    "date_created": "2011-01-26",
+    "last_commit": "2012-03-06",
+    "total_files": 1
+  },
+  "decisions": [],
+  "mystery_code": [],
+  "dependency_graph": {
+    "modules": [],
+    "connections": []
+  },
+  "timeline": [
+    {
+      "date": "2011-01-26",
+      "event": "Project created",
+      "commit_hash": "",
+      "description": "Initial commit"
+    },
+    {
+      "date": "2011-09-13",
+      "event": "New line added",
+      "commit_hash": "",
+      "description": "Added new line at end of file"
+    },
+    {
+      "date": "2012-03-06",
+      "event": "Pull request merged",
+      "commit_hash": "",
+      "description": "Merged pull request #6"
+    }
+  ],
+  "summary": {
+    "total_decisions_found": 0,
+    "most_impactful_decision": "",
+    "oldest_decision": "",
+    "repositories_age_days": 448,
+    "complexity_score": "low"
+  }
+}

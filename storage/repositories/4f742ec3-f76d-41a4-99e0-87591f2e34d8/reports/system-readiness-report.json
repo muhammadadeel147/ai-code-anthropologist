@@ -1,0 +1,56 @@
+{
+  "test_results": {
+    "test_1_onboarding": {
+      "name": "New Developer Onboarding",
+      "status": "FAIL",
+      "details": "The system does not provide a clear and comprehensive onboarding process for new developers, making it difficult for them to get started."
+    },
+    "test_2_change_impact": {
+      "name": "Change Impact Analysis",
+      "status": "FAIL",
+      "details": "The system lacks a mechanism for analyzing the impact of changes, which could lead to unintended consequences."
+    },
+    "test_3_mystery_code": {
+      "name": "Mystery Code Explanation",
+      "status": "FAIL",
+      "details": "The system is unable to provide clear explanations for mystery code, making it challenging for developers to understand and maintain the codebase."
+    },
+    "test_4_technology_decision": {
+      "name": "Technology Decision Query",
+      "status": "FAIL",
+      "details": "The system does not provide adequate support for technology decision queries, which could result in suboptimal technology choices."
+    },
+    "test_5_unclear_question": {
+      "name": "Unclear Question Handling",
+      "status": "FAIL",
+      "details": "The system struggles with handling unclear questions, which could lead to confusion and frustration among users."
+    }
+  },
+  "performance_metrics": {
+    "accuracy_score": 0.2,
+    "completeness_score": 0.1,
+    "clarity_score": 0.3,
+    "actionability_score": 0.1
+  },
+  "system_status": "NEEDS_IMPROVEMENT",
+  "deliverables": {
+    "analysis_output": true,
+    "adrs_generated": 0,
+    "knowledge_graph": true,
+    "qa_function": true
+  },
+  "known_issues": [
+    "Lack of clear onboarding process",
+    "Inadequate change impact analysis",
+    "Inability to explain mystery code",
+    "Insufficient technology decision support",
+    "Poor handling of unclear questions"
+  ],
+  "recommendations": [
+    "Develop a comprehensive onboarding process",
+    "Implement a change impact analysis mechanism",
+    "Create a knowledge base for explaining mystery code",
+    "Provide technology decision support tools",
+    "Improve unclear question handling"
+  ]
+}

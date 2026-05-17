@@ -1,0 +1,158 @@
+{
+  "graph_metadata": {
+    "repository_url": "https://github.com/muhammadadeel147/Kanbas-app",
+    "total_nodes": 5,
+    "total_edges": 7,
+    "total_risks": 2,
+    "generated_date": "2024-09-16"
+  },
+  "nodes": [
+    {
+      "id": "ADR-001",
+      "type": "decision",
+      "category": "architecture",
+      "properties": {
+        "title": "Use Express.js for Backend",
+        "status": "accepted",
+        "complexity_score": 5,
+        "impact_score": 8
+      }
+    },
+    {
+      "id": "FILE-lib-express-js",
+      "type": "code",
+      "category": "backend",
+      "properties": {
+        "filename": "lib/express.js",
+        "language": "JavaScript",
+        "dependencies": [
+          "express"
+        ]
+      }
+    },
+    {
+      "id": "FILE-auth-js",
+      "type": "code",
+      "category": "backend",
+      "properties": {
+        "filename": "auth.js",
+        "language": "JavaScript",
+        "dependencies": [
+          "passport"
+        ]
+      }
+    },
+    {
+      "id": "FILE-index-js",
+      "type": "code",
+      "category": "backend",
+      "properties": {
+        "filename": "index.js",
+        "language": "JavaScript",
+        "dependencies": [
+          "express",
+          "body-parser"
+        ]
+      }
+    },
+    {
+      "id": "FILE-package-json",
+      "type": "code",
+      "category": "configuration",
+      "properties": {
+        "filename": "package.json",
+        "language": "JSON",
+        "dependencies": [
+          "express",
+          "passport"
+        ]
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "from": "ADR-001",
+      "to": "FILE-lib-express-js",
+      "type": "implemented_in",
+      "strength": "strong"
+    },
+    {
+      "from": "ADR-001",
+      "to": "FILE-auth-js",
+      "type": "affects",
+      "strength": "weak"
+    },
+    {
+      "from": "FILE-lib-express-js",
+      "to": "FILE-index-js",
+      "type": "imports",
+      "strength": "strong"
+    },
+    {
+      "from": "FILE-auth-js",
+      "to": "FILE-index-js",
+      "type": "calls",
+      "strength": "weak"
+    },
+    {
+      "from": "FILE-index-js",
+      "to": "FILE-package-json",
+      "type": "depends_on",
+      "strength": "strong"
+    },
+    {
+      "from": "ADR-001",
+      "to": "ADR-002",
+      "type": "superseded_by",
+      "strength": "weak"
+    },
+    {
+      "from": "ADR-001",
+      "to": "FILE-package-json",
+      "type": "documented_in",
+      "strength": "strong"
+    }
+  ],
+  "risk_alerts": [
+    {
+      "id": "RISK-001",
+      "severity": "high",
+      "type": "breaking_change",
+      "title": "Express.js Version Upgrade",
+      "description": "Upgrading Express.js to version 5 may break existing dependencies.",
+      "affected_items": [
+        "FILE-lib-express-js",
+        "FILE-index-js"
+      ],
+      "mitigation": "Test dependencies before upgrading."
+    },
+    {
+      "id": "RISK-002",
+      "severity": "medium",
+      "type": "deprecated_code",
+      "title": "Passport.js Deprecation",
+      "description": "Passport.js is deprecated and may be removed in future versions.",
+      "affected_items": [
+        "FILE-auth-js"
+      ],
+      "mitigation": "Migrate to a newer authentication library."
+    }
+  ],
+  "clusters": [
+    {
+      "name": "Authentication System",
+      "nodes": [
+        "ADR-001",
+        "FILE-auth-js",
+        "FILE-index-js"
+      ]
+    },
+    {
+      "name": "Backend Dependencies",
+      "nodes": [
+        "FILE-lib-express-js",
+        "FILE-package-json"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "repository_info": {
+    "url": "https://github.com/muhammadadeel147/Kanbas-app",
+    "name": "Kanbas-app",
+    "language": "JavaScript",
+    "total_commits": 1,
+    "date_created": "2024-11-09",
+    "last_commit": "2024-11-09",
+    "total_files": 157
+  },
+  "decisions": [
+    {
+      "id": "ADR-001",
+      "title": "Initial project setup",
+      "date": "2024-11-09",
+      "author": "Muhammad Adeel",
+      "commit_hash": "",
+      "problem": "Setting up the initial project structure",
+      "alternatives": [],
+      "decision": "Create a new React project",
+      "reasoning": "To quickly start building the application",
+      "consequences": {
+        "positive": [
+          "Fast project setup"
+        ],
+        "negative": [],
+        "neutral": []
+      },
+      "related_files": [
+        {
+          "path": "package.json",
+          "lines": "",
+          "relevance": "project configuration"
+        }
+      ],
+      "status": "active"
+    }
+  ],
+  "mystery_code": [
+    {
+      "file": "Profile.tsx",
+      "lines": "1-10",
+      "snippet": "import React from 'react';",
+      "question": "Why is this code so complex?",
+      "hypothesis": "Likely due to the use of TypeScript"
+    }
+  ],
+  "dependency_graph": {
+    "modules": [
+      {
+        "name": "react",
+        "type": "library",
+        "files": [
+          "node_modules/react/index.js"
+        ]
+      },
+      {
+        "name": "auth",
+        "type": "service",
+        "files": [
+          "auth.ts"
+        ]
+      },
+      {
+        "name": "api",
+        "type": "service",
+        "files": [
+          "api.ts"
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "from": "api",
+        "to": "auth",
+        "type": "imports",
+        "strength": "strong"
+      },
+      {
+        "from": "auth",
+        "to": "react",
+        "type": "imports",
+        "strength": "weak"
+      }
+    ]
+  },
+  "timeline": [
+    {
+      "date": "2024-11-09",
+      "event": "Project created",
+      "commit_hash": "",
+      "description": "Initial project creation"
+    }
+  ],
+  "summary": {
+    "total_decisions_found": 1,
+    "most_impactful_decision": "ADR-001",
+    "oldest_decision": "ADR-001",
+    "repositories_age_days": 0,
+    "complexity_score": "low"
+  }
+}

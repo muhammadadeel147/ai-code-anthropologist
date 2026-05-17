@@ -78,10 +78,10 @@ class AnalysisError extends AppError {
   }
 }
 
-class ClaudeAPIError extends ExternalServiceError {
-  constructor(message = 'Claude API request failed') {
-    super('Claude API', message);
-    this.name = 'ClaudeAPIError';
+class IBMAPIError extends ExternalServiceError {
+  constructor(message = 'IBM AI request failed') {
+    super('IBM AI', message);
+    this.name = 'IBMAPIError';
   }
 }
 
@@ -173,7 +173,7 @@ module.exports = {
   ExternalServiceError,
   RepositoryCloneError,
   AnalysisError,
-  ClaudeAPIError,
+  IBMAPIError,
   GitHubAPIError,
   errorHandler,
   asyncHandler,

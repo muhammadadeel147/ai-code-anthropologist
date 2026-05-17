@@ -125,6 +125,43 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     logger.info(`Client disconnected: ${socket.id}`);
   });
+
+  // Receive forwarded events from worker processes and broadcast to job rooms
+  socket.on('worker:progress', (data) => {
+    try {
+      const { jobId, step, percentage, message } = data || {};
+      if (jobId) {
+        io.to(`job:${jobId}`).emit('progress', { step, percentage, message });
+        logger.info(`Forwarded worker progress for job ${jobId}: ${percentage}%`);
+      }
+    } catch (err) {
+      logger.error('Error forwarding worker:progress', err);
+    }
+  });
+
+  socket.on('worker:complete', (data) => {
+    try {
+      const { jobId, results, message } = data || {};
+      if (jobId) {
+        io.to(`job:${jobId}`).emit('complete', { message, results });
+        logger.info(`Forwarded worker complete for job ${jobId}`);
+      }
+    } catch (err) {
+      logger.error('Error forwarding worker:complete', err);
+    }
+  });
+
+  socket.on('worker:error', (data) => {
+    try {
+      const { jobId, error, message } = data || {};
+      if (jobId) {
+        io.to(`job:${jobId}`).emit('error', { error, message });
+        logger.info(`Forwarded worker error for job ${jobId}`);
+      }
+    } catch (err) {
+      logger.error('Error forwarding worker:error', err);
+    }
+  });
 });
 
 // Start server

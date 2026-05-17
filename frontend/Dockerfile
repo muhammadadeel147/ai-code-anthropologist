@@ -7,7 +7,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -15,10 +15,14 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Ensure `public` exists so runner COPY doesn't fail when repo has no public folder
+RUN mkdir -p /app/public
+
 # Set environment variables
 ENV NEXT_TELEMETRY_DISABLED 1
-ENV NEXT_PUBLIC_API_URL=http://backend:4000
-ENV NEXT_PUBLIC_WS_URL=ws://backend:4000
+ENV BACKEND_INTERNAL_URL=http://backend:4000
+ENV NEXT_PUBLIC_API_URL=http://localhost:4000
+ENV NEXT_PUBLIC_WS_URL=ws://localhost:4000
 
 RUN npm run build
 

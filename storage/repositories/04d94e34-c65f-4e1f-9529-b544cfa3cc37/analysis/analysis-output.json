@@ -1,0 +1,181 @@
+{
+  "repository_info": {
+    "url": "https://github.com/muhammadadeel147/DigitalVerse",
+    "name": "DigitalVerse",
+    "language": "TypeScript",
+    "total_commits": 43,
+    "date_created": "2026-04-24",
+    "last_commit": "2026-05-06",
+    "total_files": 109
+  },
+  "decisions": [
+    {
+      "id": "ADR-001",
+      "title": "Adopt TypeScript",
+      "date": "2026-04-24",
+      "author": "Muhammad Adeel",
+      "commit_hash": "Not Available",
+      "problem": "Need for a statically typed language",
+      "alternatives": [
+        "JavaScript",
+        "CoffeeScript"
+      ],
+      "decision": "TypeScript",
+      "reasoning": "Better code maintainability and scalability",
+      "consequences": {
+        "positive": [
+          "Improved code quality"
+        ],
+        "negative": [
+          "Steeper learning curve"
+        ],
+        "neutral": [
+          "No significant impact on performance"
+        ]
+      },
+      "related_files": [
+        {
+          "path": "App.tsx",
+          "lines": "1-1403",
+          "relevance": "core implementation"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ADR-002",
+      "title": "Implement Lead Form Submission",
+      "date": "2026-04-25",
+      "author": "Muhammad Adeel",
+      "commit_hash": "Not Available",
+      "problem": "Need for a contact form",
+      "alternatives": [
+        "Third-party services",
+        "Custom implementation"
+      ],
+      "decision": "Custom implementation",
+      "reasoning": "Better control over form handling and error handling",
+      "consequences": {
+        "positive": [
+          "Improved user engagement"
+        ],
+        "negative": [
+          "Increased development time"
+        ],
+        "neutral": [
+          "No significant impact on performance"
+        ]
+      },
+      "related_files": [
+        {
+          "path": "form-handler.php",
+          "lines": "1-6685",
+          "relevance": "core implementation"
+        }
+      ],
+      "status": "active"
+    },
+    {
+      "id": "ADR-003",
+      "title": "Enforce HTTPS and WWW Subdomain",
+      "date": "2026-05-01",
+      "author": "Muhammad Adeel",
+      "commit_hash": "Not Available",
+      "problem": "Need for secure and consistent URLs",
+      "alternatives": [
+        "HTTP",
+        "Non-WWW subdomain"
+      ],
+      "decision": "HTTPS and WWW subdomain",
+      "reasoning": "Improved security and SEO",
+      "consequences": {
+        "positive": [
+          "Improved security",
+          "Better SEO"
+        ],
+        "negative": [
+          "Potential impact on existing links"
+        ],
+        "neutral": [
+          "No significant impact on performance"
+        ]
+      },
+      "related_files": [
+        {
+          "path": ".htaccess",
+          "lines": "1-2429",
+          "relevance": "core implementation"
+        }
+      ],
+      "status": "active"
+    }
+  ],
+  "mystery_code": [
+    {
+      "file": "components.json",
+      "lines": "1-414",
+      "snippet": "Not Available",
+      "question": "What is the purpose of this file?",
+      "hypothesis": "Likely used for component registration or configuration"
+    }
+  ],
+  "dependency_graph": {
+    "modules": [
+      {
+        "name": "auth",
+        "type": "service",
+        "files": [
+          "auth.js"
+        ]
+      },
+      {
+        "name": "form-handler",
+        "type": "service",
+        "files": [
+          "form-handler.php"
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "from": "App.tsx",
+        "to": "auth.js",
+        "type": "imports",
+        "strength": "strong"
+      },
+      {
+        "from": "form-handler.php",
+        "to": "App.tsx",
+        "type": "requests",
+        "strength": "weak"
+      }
+    ]
+  },
+  "timeline": [
+    {
+      "date": "2026-04-24",
+      "event": "Project created",
+      "commit_hash": "Not Available",
+      "description": "Initial commit"
+    },
+    {
+      "date": "2026-04-25",
+      "event": "Lead form submission implemented",
+      "commit_hash": "Not Available",
+      "description": "Custom implementation of lead form submission"
+    },
+    {
+      "date": "2026-05-01",
+      "event": "HTTPS and WWW subdomain enforced",
+      "commit_hash": "Not Available",
+      "description": "Improved security and SEO"
+    }
+  ],
+  "summary": {
+    "total_decisions_found": 3,
+    "most_impactful_decision": "ADR-001",
+    "oldest_decision": "ADR-001",
+    "repositories_age_days": 12,
+    "complexity_score": "medium"
+  }
+}

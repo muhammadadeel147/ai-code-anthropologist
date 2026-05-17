@@ -19,6 +19,7 @@ import {
   CodeBracketIcon,
   LinkIcon,
 } from '@heroicons/react/24/outline';
+import { apiUrl } from '@/lib/api';
 
 interface QAAnswer {
   question: string;
@@ -104,7 +105,7 @@ export default function QAInterfacePage() {
   const { data: history } = useQuery<QAHistory[]>({
     queryKey: ['qa-history', repoId],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:3001/api/repositories/${repoId}/qa/history`);
+      const response = await fetch(apiUrl(`/api/repositories/${repoId}/qa/history`));
       if (!response.ok) return [];
       return response.json();
     },
@@ -115,7 +116,7 @@ export default function QAInterfacePage() {
     queryKey: ['suggested-questions', repoId],
     queryFn: async () => {
       const response = await fetch(
-        `http://localhost:3001/api/repositories/${repoId}/qa/suggestions`
+        apiUrl(`/api/repositories/${repoId}/qa/suggestions`)
       );
       if (!response.ok) return [];
       return response.json();
@@ -125,7 +126,7 @@ export default function QAInterfacePage() {
   // Ask question mutation
   const askMutation = useMutation({
     mutationFn: async (q: string) => {
-      const response = await fetch(`http://localhost:3001/api/repositories/${repoId}/qa/ask`, {
+      const response = await fetch(apiUrl(`/api/repositories/${repoId}/qa/ask`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: q }),

@@ -24,14 +24,17 @@ export default function Home() {
         body: JSON.stringify({ url }),
       });
 
-      const data = await response.json();
+      const contentType = response.headers.get('content-type') || '';
+      const responseBody = contentType.includes('application/json')
+        ? await response.json()
+        : { message: await response.text() };
 
       if (!response.ok) {
-        throw new Error(data.message || 'Failed to submit repository');
+        throw new Error(responseBody.message || 'Failed to submit repository');
       }
 
       // Redirect to analysis page
-      router.push(`/analysis/${data.data.jobId}`);
+      router.push(`/analysis/${responseBody.data.jobId}`);
     } catch (err: any) {
       setError(err.message || 'An error occurred');
     } finally {

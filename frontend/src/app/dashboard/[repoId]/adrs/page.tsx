@@ -15,6 +15,7 @@ import {
   XCircleIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
+import { apiUrl } from '@/lib/api';
 
 interface ADR {
   id: string;
@@ -56,7 +57,7 @@ export default function ADRBrowserPage() {
   const { data: adrs, isLoading, error } = useQuery<ADR[]>({
     queryKey: ['adrs', repoId],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:3001/api/repositories/${repoId}/adrs`);
+      const response = await fetch(apiUrl(`/api/repositories/${repoId}/adrs`));
       if (!response.ok) throw new Error('Failed to fetch ADRs');
       return response.json();
     },

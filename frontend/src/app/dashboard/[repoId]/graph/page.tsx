@@ -14,6 +14,7 @@ import {
   ArrowsPointingInIcon,
   PhotoIcon,
 } from '@heroicons/react/24/outline';
+import { apiUrl } from '@/lib/api';
 
 interface GraphNode {
   id: string;
@@ -75,7 +76,7 @@ export default function KnowledgeGraphPage() {
   const { data: graphData, isLoading, error } = useQuery<GraphData>({
     queryKey: ['graph', repoId],
     queryFn: async () => {
-      const response = await fetch(`http://localhost:3001/api/repositories/${repoId}/graph`);
+      const response = await fetch(apiUrl(`/api/repositories/${repoId}/graph`));
       if (!response.ok) throw new Error('Failed to fetch graph data');
       return response.json();
     },

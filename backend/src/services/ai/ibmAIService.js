@@ -1,7 +1,24 @@
 const axios = require('axios');
+const { jsonrepair } = require('jsonrepair');
 const config = require('../../config');
 const logger = require('../../utils/logger');
-const { ClaudeAPIError } = require('../../utils/errors');
+const { IBMAPIError } = require('../../utils/errors');
+
+const parseAiJsonResponse = (content, promptName) => {
+  const fencedMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  const candidate = (fencedMatch?.[1] || content.match(/\{[\s\S]*\}/)?.[0] || content).trim();
+
+  try {
+    return JSON.parse(candidate);
+  } catch (parseError) {
+    try {
+      return JSON.parse(jsonrepair(candidate));
+    } catch (repairError) {
+      logger.error(`Failed to parse ${promptName} response:`, repairError);
+      throw new Error('Invalid JSON response from IBM AI');
+    }
+  }
+};
 
 /**
  * IBM AI Service (IBM Bob / watsonx.ai)
@@ -9,11 +26,43 @@ const { ClaudeAPIError } = require('../../utils/errors');
  */
 class IBMAIService {
   constructor() {
-    this.apiKey = config.claudeApiKey; // Using same env var for now, rename to IBM_API_KEY in production
-    this.baseUrl = config.ibm?.apiUrl || 'https://api.anthropic.com/v1'; // IBM endpoint
-    this.model = config.claude.model;
-    this.maxTokens = config.claude.maxTokens;
-    this.temperature = config.claude.temperature;
+    this.apiKey = config.ibm.apiKey;
+    this.baseUrl = config.ibm.apiUrl;
+    this.projectId = config.ibm.projectId;
+    this.modelId = config.ibm.modelId;
+    this.maxTokens = config.ai.maxTokens;
+    this.temperature = config.ai.temperature;
+    this.accessToken = null;
+    this.accessTokenExpiresAt = 0;
+  }
+
+  /**
+   * Get an IBM Cloud IAM access token using the Watsonx API key.
+   */
+  async getAccessToken() {
+    if (this.accessToken && Date.now() < this.accessTokenExpiresAt - 60000) {
+      return this.accessToken;
+    }
+
+    const tokenResponse = await axios.post(
+      'https://iam.cloud.ibm.com/identity/token',
+      new URLSearchParams({
+        grant_type: 'urn:ibm:params:oauth:grant-type:apikey',
+        apikey: this.apiKey,
+      }),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Accept: 'application/json',
+        },
+        timeout: 30000,
+      }
+    );
+
+    this.accessToken = tokenResponse.data.access_token;
+    this.accessTokenExpiresAt = Date.now() + (tokenResponse.data.expires_in * 1000);
+
+    return this.accessToken;
   }
 
   /**
@@ -21,52 +70,69 @@ class IBMAIService {
    */
   async sendPrompt(prompt, systemPrompt = null, options = {}) {
     try {
-      const requestBody = {
-        model: options.model || this.model,
-        max_tokens: options.maxTokens || this.maxTokens,
-        temperature: options.temperature || this.temperature,
-        messages: [
-          {
-            role: 'user',
-            content: prompt,
-          },
-        ],
-      };
-
-      // Add system prompt if provided
-      if (systemPrompt) {
-        requestBody.system = systemPrompt;
+      if (!this.apiKey) {
+        throw new IBMAPIError('Missing IBM Watsonx API key. Please set IBM_WATSONX_API_KEY.');
       }
 
+      if (!this.projectId) {
+        throw new IBMAPIError('Missing IBM Watsonx project ID. Please set IBM_WATSONX_PROJECT_ID.');
+      }
+
+      if (!/^[0-9a-fA-F-]{32,36}$/.test(this.projectId)) {
+        throw new IBMAPIError('IBM_WATSONX_PROJECT_ID must be the watsonx project UUID, not the project name.');
+      }
+
+      const accessToken = await this.getAccessToken();
+
+      const fullPrompt = systemPrompt
+        ? `${systemPrompt}\n\n${prompt}`
+        : prompt;
+
+      const requestBody = {
+        model_id: options.modelId || this.modelId,
+        project_id: this.projectId,
+        input: fullPrompt,
+        parameters: {
+          decoding_method: 'greedy',
+          max_new_tokens: options.maxTokens || this.maxTokens,
+          temperature: options.temperature || this.temperature,
+          repetition_penalty: 1,
+          stop_sequences: [],
+        },
+      };
+
       logger.info('Sending prompt to IBM AI', {
-        model: requestBody.model,
-        promptLength: prompt.length,
+        model: requestBody.model_id,
+        promptLength: fullPrompt.length,
       });
 
       const response = await axios.post(
-        `${this.baseUrl}/messages`,
+        `${this.baseUrl}/ml/v1/text/generation?version=2023-05-29`,
         requestBody,
         {
           headers: {
             'Content-Type': 'application/json',
-            'x-api-key': this.apiKey,
-            'anthropic-version': '2023-06-01',
+            Authorization: `Bearer ${accessToken}`,
           },
-          timeout: options.timeout || 300000, // 5 minutes default
+          timeout: options.timeout || 300000,
         }
       );
 
-      const content = response.data.content[0].text;
-      
+      const generatedText = response.data?.results?.[0]?.generated_text;
+
+      if (!generatedText) {
+        throw new IBMAPIError('IBM Watsonx returned an empty response.');
+      }
+
       logger.info('Received response from IBM AI', {
-        responseLength: content.length,
-        usage: response.data.usage,
+        responseLength: generatedText.length,
+        usage: response.data?.results?.[0]?.input_tokens,
       });
 
       return {
-        content,
-        usage: response.data.usage,
-        model: response.data.model,
+        content: generatedText,
+        usage: response.data?.results?.[0],
+        model: requestBody.model_id,
       };
     } catch (error) {
       logger.error('IBM AI API error:', {
@@ -76,14 +142,14 @@ class IBMAIService {
       });
 
       if (error.response?.status === 429) {
-        throw new ClaudeAPIError('Rate limit exceeded. Please try again later.');
+        throw new IBMAPIError('Rate limit exceeded. Please try again later.');
       }
 
       if (error.response?.status === 401) {
-        throw new ClaudeAPIError('Invalid API key. Please check your IBM AI credentials.');
+        throw new IBMAPIError('Invalid IBM Watsonx API key. Please check your IBM AI credentials.');
       }
 
-      throw new ClaudeAPIError(error.message);
+      throw new IBMAPIError(error.message);
     }
   }
 
@@ -235,17 +301,7 @@ IMPORTANT: Return ONLY valid JSON, no markdown formatting or explanations.
       timeout: 600000, // 10 minutes for analysis
     });
 
-    // Parse JSON response
-    try {
-      const jsonMatch = response.content.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        throw new Error('No JSON found in response');
-      }
-      return JSON.parse(jsonMatch[0]);
-    } catch (error) {
-      logger.error('Failed to parse Prompt 1 response:', error);
-      throw new Error('Invalid JSON response from AI');
-    }
+    return parseAiJsonResponse(response.content, 'Prompt 1');
   }
 
   /**
@@ -349,16 +405,7 @@ Generate ADRs for ALL decisions found. Return ONLY valid JSON.
       timeout: 600000,
     });
 
-    try {
-      const jsonMatch = response.content.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        throw new Error('No JSON found in response');
-      }
-      return JSON.parse(jsonMatch[0]);
-    } catch (error) {
-      logger.error('Failed to parse Prompt 2 response:', error);
-      throw new Error('Invalid JSON response from AI');
-    }
+    return parseAiJsonResponse(response.content, 'Prompt 2');
   }
 
   /**
@@ -443,16 +490,7 @@ Return ONLY valid JSON.
       timeout: 600000,
     });
 
-    try {
-      const jsonMatch = response.content.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        throw new Error('No JSON found in response');
-      }
-      return JSON.parse(jsonMatch[0]);
-    } catch (error) {
-      logger.error('Failed to parse Prompt 3 response:', error);
-      throw new Error('Invalid JSON response from AI');
-    }
+    return parseAiJsonResponse(response.content, 'Prompt 3');
   }
 
   /**
@@ -528,16 +566,7 @@ Return ONLY valid JSON.
       timeout: 600000,
     });
 
-    try {
-      const jsonMatch = response.content.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        throw new Error('No JSON found in response');
-      }
-      return JSON.parse(jsonMatch[0]);
-    } catch (error) {
-      logger.error('Failed to parse Prompt 4 response:', error);
-      throw new Error('Invalid JSON response from AI');
-    }
+    return parseAiJsonResponse(response.content, 'Prompt 4');
   }
 
   /**
@@ -616,16 +645,7 @@ Return ONLY valid JSON.
       timeout: 600000,
     });
 
-    try {
-      const jsonMatch = response.content.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        throw new Error('No JSON found in response');
-      }
-      return JSON.parse(jsonMatch[0]);
-    } catch (error) {
-      logger.error('Failed to parse Prompt 5 response:', error);
-      throw new Error('Invalid JSON response from AI');
-    }
+    return parseAiJsonResponse(response.content, 'Prompt 5');
   }
 }
 

@@ -65,7 +65,9 @@ if [ ! -f ".env" ]; then
     echo "Creating .env file from .env.example..."
     cp .env.example .env
     echo -e "${YELLOW}⚠️  Please edit .env and add your IBM AI API key:${NC}"
-    echo -e "${YELLOW}   CLAUDE_API_KEY=your_ibm_api_key_here${NC}"
+    echo -e "${YELLOW}   IBM_WATSONX_API_KEY=your_ibm_api_key_here${NC}"
+    echo -e "${YELLOW}   IBM_WATSONX_PROJECT_ID=your_ibm_watsonx_project_id_here${NC}"
+    echo -e "${YELLOW}   IBM_WATSONX_URL=your_ibm_watsonx_api_url_here${NC}"
     echo ""
     read -p "Press Enter after you've added your API key..."
 else
@@ -73,9 +75,9 @@ else
 fi
 
 # Check if API key is set
-if grep -q "your_ibm_api_key_here" .env || grep -q "your_claude_api_key_here" .env; then
+if grep -q "your_ibm_watsonx_api_key_here" .env || grep -q "your_ibm_watsonx_project_id_here" .env || grep -q "your_ibm_watsonx_api_url_here" .env; then
     echo -e "${YELLOW}⚠️  Warning: API key not set in .env file${NC}"
-    echo "The system will not work without a valid IBM AI API key"
+    echo "The system will not work without a valid IBM Watsonx API key"
     read -p "Continue anyway? (y/n) " -n 1 -r
     echo
     if [[ ! $REPLY =~ ^[Yy]$ ]]; then

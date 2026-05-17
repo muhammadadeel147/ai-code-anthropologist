@@ -1,0 +1,48 @@
+{
+  "qa_function": {
+    "name": "answerCodebaseQuestion",
+    "description": "Answers questions about the codebase",
+    "example_questions": [
+      "Why did we choose X?",
+      "What breaks if I change Y?",
+      "When was Z implemented?"
+    ],
+    "answer_template": {
+      "question": "string",
+      "intent_type": "DECISION_QUERY|CHANGE_IMPACT|CODE_EXPLANATION|HISTORICAL_QUERY",
+      "confidence_score": 0,
+      "direct_answer": {
+        "summary": "string",
+        "key_points": []
+      },
+      "historical_context": {},
+      "technical_details": {},
+      "related_decisions": [],
+      "impact_of_changes": {},
+      "sources": []
+    }
+  },
+  "sample_answers": [
+    {
+      "question": "Why did we choose the main technology?",
+      "answer": {
+        "question": "Why did we choose the main technology?",
+        "intent_type": "DECISION_QUERY",
+        "confidence_score": 0.9,
+        "direct_answer": {
+          "summary": "The main technology was chosen based on its popularity and ease of use.",
+          "key_points": [
+            "Popularity",
+            "Ease of use"
+          ]
+        },
+        "sources": [
+          {
+            "type": "ADR",
+            "id": "ADR-001"
+          }
+        ]
+      }
+    }
+  ]
+}
