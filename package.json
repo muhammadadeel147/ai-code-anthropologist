@@ -1,0 +1,35 @@
+{
+  "name": "ai-code-anthropologist",
+  "version": "1.0.0",
+  "description": "AI-powered tool to analyze GitHub repositories and generate architectural documentation",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "setup": "npm install && npm run docker:up"
+  },
+  "keywords": [
+    "ai",
+    "architecture",
+    "documentation",
+    "adr",
+    "knowledge-graph",
+    "code-analysis"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
